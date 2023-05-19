@@ -1,18 +1,24 @@
-/** @type {import('tailwindcss').Config} */
 module.exports = {
+  mode: 'jit',
   content: [
-    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
+    './pages/**/*.{js,ts,jsx,tsx}',
+    './components/**/*.{js,ts,jsx,tsx}',
   ],
+  darkMode: 'class',
   theme: {
+    fontSize: {
+      'extra-large': '2.0rem',
+      'medium': '1.5rem',
+      'normal': '1.0rem',
+    },
     extend: {
+      // Add any custom theme configuration here
       backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-conic':
-          'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+        glass: 'rgba(0, 0, 255, 0.3)',
       },
+
     },
   },
+  variants: {},
   plugins: [],
-}
+};
