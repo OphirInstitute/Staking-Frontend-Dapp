@@ -1,5 +1,6 @@
 import React, { useRef } from "react";
 import StakingForm from "./StakingForm";
+import MainForm from "./MainForm";
 
 const Hero = () => {
   const stakingFormRef = useRef(null);
@@ -75,29 +76,43 @@ const Hero = () => {
               </div>
             </div>
             <div className="mt-12">
-            <div className="py-8">
-      <h2 className="text-medium font-bold mb-6">Why Stake with Us?</h2>
-      <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        <li className="bg-white p-4 rounded shadow">
-          <h3 className="text-xl font-bold mb-2">High Yield</h3>
-          <p>Earn attractive staking rewards, with competitive rates that outperform traditional investment options.</p>
-        </li>
-        <li className="bg-white p-4 rounded shadow">
-          <h3 className="text-xl font-bold mb-2">Secure and Trustworthy</h3>
-          <p>Our Dapp is built on a robust and secure blockchain network, ensuring the safety of your assets and data.</p>
-        </li>
-        <li className="bg-white p-4 rounded shadow">
-          <h3 className="text-xl font-bold mb-2">Flexibility</h3>
-          <p>Stake your tokens for the desired duration and enjoy the flexibility to withdraw or reinvest your rewards at any time.</p>
-        </li>
-      </ul>
-    </div>
+              <div className="py-8">
+                <h2 className="text-medium font-bold mb-6">
+                  Why Stake with Us?
+                </h2>
+                <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  <li className="bg-white p-4 rounded shadow">
+                    <h3 className="text-xl font-bold mb-2">High Yield</h3>
+                    <p>
+                      Earn attractive staking rewards, with competitive rates
+                      that outperform traditional investment options.
+                    </p>
+                  </li>
+                  <li className="bg-white p-4 rounded shadow">
+                    <h3 className="text-xl font-bold mb-2">
+                      Secure and Trustworthy
+                    </h3>
+                    <p>
+                      Our Dapp is built on a robust and secure blockchain
+                      network, ensuring the safety of your assets and data.
+                    </p>
+                  </li>
+                  <li className="bg-white p-4 rounded shadow">
+                    <h3 className="text-xl font-bold mb-2">Flexibility</h3>
+                    <p>
+                      Stake your tokens for the desired duration and enjoy the
+                      flexibility to withdraw or reinvest your rewards at any
+                      time.
+                    </p>
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
         </div>
       </div>
       <div className="mt-8" ref={stakingFormRef}>
-        <StakingForm />
+        <MainForm />
       </div>
     </div>
   );

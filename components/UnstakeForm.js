@@ -1,48 +1,51 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ethers } from "ethers";
-import ERC20ABI from "./ERC20ABI";
 import StakingABI from "./StakingABI";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-
-const StakingForm = () => {
+const UnstakeForm = () => {
   const [amount, setAmount] = useState(0);
-  const [approvalStatus, setApprovalStatus] = useState("idle");
-  const [stakingStatus, setStakingStatus] = useState("idle");
+  const [stakedBalance, setStakedBalance] = useState(0);
+  const [unStakeStatus, setUnstakeStatus] = useState("idle");
+
+  useEffect(() => {
+    getStakedBalance();
+  }, []);
 
   const handleAmount = (event) => {
     event.preventDefault();
     setAmount(event.target.value);
   };
 
-  const contractAddress = "0xe2a28aAC42Cf71BA802fc6bb715189b0A89B348a";
   const stakingContractAddress = "0x2EAab956079E8CD97947C2d39A47D5374c83DF6B";
 
-  async function approveToken() {
+  async function getStakedBalance() {
     try {
-      setApprovalStatus("approving");
-
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = await provider.getSigner();
-      const ERC20 = new ethers.Contract(contractAddress, ERC20ABI, signer);
+      const address = await signer.getAddress();
+      const stakingContract = new ethers.Contract(
+        stakingContractAddress,
+        StakingABI,
+        signer
+      );
 
-      // Approve tokens for spending
-      const approveERC20 = await ERC20.approve(stakingContractAddress, amount);
-      await approveERC20.wait();
+      // Get staked tokens balance
+      const balance = await stakingContract.balanceOf(address);
+      // convert it to integer
+      const balanceInt = parseInt(balance);
+      setStakedBalance(balanceInt);
 
-      setApprovalStatus("approved");
-      toast.success("Approval Successful");
+      console.log(balanceInt);
     } catch (error) {
       console.log(error);
-      setApprovalStatus("error");
-      toast.error("Approval failed");
     }
   }
 
   async function stakeToken() {
     try {
-      setStakingStatus("staking");
+      setUnstakeStatus("unStaking");
 
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = await provider.getSigner();
@@ -53,16 +56,16 @@ const StakingForm = () => {
       );
 
       // Stake tokens
-      const stake = await stakingContract.stake(amount);
+      const stake = await stakingContract.withdraw(amount);
       await stake.wait();
       console.log(stake);
 
-      setStakingStatus("staked");
-      toast.success("Staking Successful");
+      toast.success(`Unstaking Successful`, stake);
+      setUnstakeStatus("unStaked");
     } catch (error) {
       console.log(error);
-      setStakingStatus("error");
-      toast.error("Staking failed");
+      setUnstakeStatus("error");
+      toast.error(`UnStaking Failed`, error);
     }
   }
 
@@ -78,36 +81,25 @@ const StakingForm = () => {
               className="block text-gray-700 font-bold mb-2 mt-2"
               htmlFor="amount"
             >
-              Enter Amount To Stake:
+              Enter Amount To Unstake:
             </label>
+            <span className="text-gray-500">{stakedBalance} $BoredPepe</span>
             <input
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mt-2"
               id="amount"
               type="number"
-              placeholder="Enter amount to stake ($BoredPepe)"
+              placeholder="Enter amount to Unstake ($BoredPepe)"
               onChange={handleAmount}
             />
           </div>
           <div className="flex items-center justify-center">
-            {approvalStatus === "approved" ? (
-              <button
-                className="bg-[#6837cf] text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                type="button"
-                onClick={stakeToken}
-               
-              >
-                {stakingStatus === "staking" ? "Staking..." : "Stake Token"}
-              </button>
-            ) : (
-              <button
-                className="bg-[#6837cf] text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                type="button"
-                onClick={approveToken}
-               
-              >
-                {approvalStatus === "approving" ? "Approving..." : "Approve Token"}
-              </button>
-            )}
+            <button
+              className="bg-[#6837cf] text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              type="button"
+              onClick={stakeToken}
+            >
+              {unStakeStatus === "unStaking" ? "UnStaking..." : "Unstake Token"}
+            </button>
           </div>
         </form>
       </div>
@@ -116,4 +108,4 @@ const StakingForm = () => {
   );
 };
 
-export default StakingForm;
+export default UnstakeForm;
