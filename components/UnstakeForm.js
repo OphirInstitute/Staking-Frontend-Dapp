@@ -1,25 +1,33 @@
 import React, { useState, useEffect } from "react";
+// import ethersjs libary
 import { ethers } from "ethers";
+// import staking contract ABI
 import StakingABI from "./StakingABI";
+// notifier
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const UnstakeForm = () => {
+  // set state for the form
   const [amount, setAmount] = useState(0);
   const [stakedBalance, setStakedBalance] = useState(0);
   const [unStakeStatus, setUnstakeStatus] = useState("idle");
 
+  // call out stake balance function using useEffect
   useEffect(() => {
     getStakedBalance();
   }, []);
-
+  
+  // create a function to handle input
   const handleAmount = (event) => {
     event.preventDefault();
     setAmount(event.target.value);
   };
 
+  // store staking addresss
   const stakingContractAddress = "0x2EAab956079E8CD97947C2d39A47D5374c83DF6B";
 
+  // write a function to withdraw the stakedBalance
   async function getStakedBalance() {
     try {
       const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -43,7 +51,8 @@ const UnstakeForm = () => {
     }
   }
 
-  async function stakeToken() {
+  // function to unstake token rewards
+  async function unStakeToken() {
     try {
       setUnstakeStatus("unStaking");
 
@@ -96,7 +105,7 @@ const UnstakeForm = () => {
             <button
               className="bg-[#6837cf] text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
               type="button"
-              onClick={stakeToken}
+              onClick={unStakeToken}
             >
               {unStakeStatus === "unStaking" ? "UnStaking..." : "Unstake Token"}
             </button>
