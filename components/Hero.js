@@ -1,9 +1,11 @@
 import React, { useRef } from "react";
-import StakingForm from "./StakingForm";
 import MainForm from "./MainForm";
 
 const Hero = () => {
+  // create a reference for the form elements
   const stakingFormRef = useRef(null);
+
+  // Scroll to the form element with smooth scrolling behavior
 
   const handleStakeNowClick = () => {
     stakingFormRef.current.scrollIntoView({ behavior: "smooth" });
